@@ -5,4 +5,72 @@
     <select id="findAll" resultType="customer">
         select * from customer;
     </select>
+    
+    <resultMap id="customerResult" type="customer">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="zip" property="zip"/>
+        <result column="address" property="address"/>
+        <result column="tel_no" property="tel_no"/>
+        <result column="email" property="email"/>
+        <result column="partener" property="partener"/>
+        <result column="representative" property="representative"/>
+        <result column="station" property="station"/>
+        <result column="delete_flag" property="delete_flag"/>
+        <result column="insert_date" property="insert_date"/>
+        <result column="update_date" property="update_date"/>
+    </resultMap>
+    <select id="searchByCondition" parameterType="customer" resultMap="customerResult">
+        select * from customer
+            <where>
+                <if test="id != null and id != ''">
+                    and id = #{id}
+                </if>
+                <if test="name != null and name != ''">
+                    and name like CONCAT('%',#{name},'%' )
+                </if>
+                <if test="zip != null and zip !=''">
+                    and zip = #{zip}
+                </if>
+                <if test="address != null and address !=''">
+                    and address like CONCAT('%',#{address},'%' )
+                </if>
+                <if test="tel_no !=null and tel_no != ''">
+                    and tel_no = #{tel_no}
+                </if>
+                <if test="email !=null and email != ''">
+                    and email = #{email}
+                </if>
+                <if test="partener !=null and partener != ''">
+                    and partener = #{partener}
+                </if>
+                <if test="representative !=null and representative != ''">
+                    and representative like CONCAT('%',#{representative},'%' )
+                </if>
+                <if test="station !=null and station != ''">
+                    and station like CONCAT('%',#{station},'%' )
+                </if>
+                <if test="insert_date !=null and insert_date != ''">
+                    and insert_date = like CONCAT('%',#{insert_date},'%' )
+                </if>
+                <if test="update_date !=null and update_date != ''">
+                    and  update_date = like CONCAT('%',#{update_date},'%' )
+                </if>
+            </where>
+    </select>
+
+    <insert id="addCustomer" parameterType="customer">
+        insert into customer values (#{id},#{name},#{zip},#{address},#{tel_no},#{email},#{partener},#{representative},#{station},#{delete_flag},#{insert_date},#{update_date})
+    </insert>
+
+    <delete id="deleteCustomer" parameterType="Integer">
+        delete from customer where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="List">
+        delete from customer where id in
+        <foreach collection="ids" item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
