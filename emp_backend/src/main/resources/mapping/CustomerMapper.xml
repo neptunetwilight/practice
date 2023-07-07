@@ -63,6 +63,23 @@
         insert into customer values (#{id},#{name},#{zip},#{address},#{tel_no},#{email},#{partener},#{representative},#{station},#{delete_flag},#{insert_date},#{update_date})
     </insert>
 
+    <update id="updateCustomer" parameterType="customer">
+        update customer
+        <set>
+            name = #{name},
+            zip = #{zip},
+            address = #{address},
+            tel_no = #{tel_no},
+            email = #{email},
+            partener = #{partener},
+            representative = #{representative},
+            station = #{station},
+            delete_flag = #{delete_flag},
+            update_date = #{update_date}
+        </set>
+            where id = #{id}
+    </update>
+
     <delete id="deleteCustomer" parameterType="Integer">
         delete from customer where id = #{id}
     </delete>
@@ -73,4 +90,8 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectByPage" resultMap="customerResult">
+        select * from customer
+    </select>
 </mapper>

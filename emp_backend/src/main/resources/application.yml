@@ -10,3 +10,19 @@ mybatis:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: com.jcl.emp_backend.pojo
 
+#pagehelper分页插件配置
+page helper:
+
+  helperDialect: mysql
+  # reasonable分页参数合理化，默认是false。
+  # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页；
+  # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true
+  # support-methods-arguments支持通过 Mapper 接口参数来传递分页参数
+  # 默认值 false
+  supportMethodsArguments: true
+  # params为了支持startPage(Object params)方法，增加了该参数来配置参数映射，
+  # 用于从对象中根据属性名取值
+  #  默认值为 countSql
+  params: count=countSql
+

@@ -1,5 +1,7 @@
 package com.jcl.emp_backend.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.jcl.emp_backend.pojo.Customer;
 import com.jcl.emp_backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,15 @@ public class CustomerController {
     }
 
     @GetMapping("/searchCondition")
-    public List<Customer> searchByCondition(@RequestParam Customer params){
-        return customerService.searchByCondition(params);
+    @ResponseBody
+    public List<Customer> searchByCondition(@RequestBody Customer params){
+        List<Customer> clist = customerService.searchByCondition(params);
+        return clist;
     }
 
     String message = "";
     @PostMapping("/addCustomer")
+    @ResponseBody
     public String addCustomer(@RequestBody Customer customerinfo){
         try{
             customerService.saveCustomer(customerinfo);
@@ -39,7 +44,9 @@ public class CustomerController {
         return message;
     }
 
+
     @DeleteMapping("/deleteCustomer/{id}")
+    @ResponseBody
     public String deleteCustomer( @PathVariable int id){
         try{
             customerService.deleteCustomer(id);
@@ -52,6 +59,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/deleteSelected")
+    @ResponseBody
     public String deleteByIds (@RequestBody List<Integer> ids){
         try{
             customerService.deleteByIds(ids);
@@ -61,5 +69,26 @@ public class CustomerController {
             message = "删除用户失败";
         }
         return message;
+    }
+
+    @PostMapping("/updateCustomer")
+    @ResponseBody
+    public String updateCustomer(@RequestBody Customer customerinfo){
+        try{
+            customerService.updateCustomer(customerinfo);
+            message = "修改用户成功";
+        }catch (Exception e){
+            e.printStackTrace();
+            message = "修改用户失败";
+        }
+        return message;
+    }
+
+    @RequestMapping("/customerPage")
+    @ResponseBody
+    public PageInfo<Customer> pageCustomer(){
+        PageInfo<Customer> pageInfo=null;
+        pageInfo=customerService.selectByPage();
+        return pageInfo;
     }
 }
